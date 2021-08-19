@@ -1,29 +1,18 @@
-import os
+from flask import Flask, render_template
 
-import jinja2
-import webapp2
+app = Flask(__name__)
 
-jinja_environment = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(os.path.dirname(__file__) + '/templates')
-)
+@app.route("/")
+def homepage():
+    return render_template("index.html", title="HOME PAGE")
 
+@app.route("/docs")
+def docs():
+    return render_template("index.html", title="docs page")
 
-class MainPage(webapp2.RequestHandler):
+@app.route("/about")
+def about():
+    return render_template("index.html", title="about page")
 
-    def get(self):
-
-        template_values = {
-            'page_a': True,
-        }
-
-        template = jinja_environment.get_template('index.html', template_values)
-        self.response.out.write(template.render(template_values))
-
-
-
-app = webapp2.WSGIApplication(
-    [
-        ('/', MainPage),
-    ],
-    debug=True)
-
+if __name__ == "__main__":
+    app.run(debug=True)
